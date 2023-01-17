@@ -9,6 +9,7 @@ body {
     background-position: center;
     min-height: 100vh;
     font-family: 'zabras', Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
 
 canvas {
