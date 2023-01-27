@@ -74,7 +74,7 @@ class DrawWorld {
         this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
         this.drawstatusBarEndboss();
-        this.drawCollectedItems();
+        this.drawstatusBarEndbossIcon();
     }
 
 
@@ -84,6 +84,11 @@ class DrawWorld {
     drawstatusBarEndboss() {
         if (this.character.reachedEndboss(this.endboss, 520))
             this.addToMap(this.statusBarEndboss);
+    }
+
+    drawstatusBarEndbossIcon() {
+        if (this.character.reachedEndboss(this.endboss, 520))
+            this.addToMap(this.statusBarEndbossIcon);
     }
 
 
@@ -96,18 +101,6 @@ class DrawWorld {
         else if (this.endboss.endGame)
             this.addToMap(this.gameOver); 
     }
-
-
-    /**
-     * draws the number of items that are collectable
-     */
-    drawCollectedItems() {
-        this.ctx.font = '30px zabras';
-        this.ctx.fillStyle = 'black';
-        this.ctx.fillText(this.statusBarCoin.collectedCoins, 80, 102);
-        this.ctx.fillText(this.statusBarBottle.collectedBottles, 170, 102);
-    }
-
 
     /**
      * repeat the drawing

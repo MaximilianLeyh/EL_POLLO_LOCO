@@ -6,33 +6,35 @@ class World extends DrawWorld {
     cameraX = 0;
     slowInterval;
     fastInterval;
-
     character = new Character();
     endboss = new Endboss();
     statusBarHealth = new StatusBarHealth();
-    statusBarEndboss = new StatusBarEndboss();
-    statusBarBottle = new StatusBarBottle();
     statusBarCoin = new StatusBarCoin();
+    statusBarBottle = new StatusbarBottle();
+    statusBarEndboss = new StatusbarEndboss();
+    statusBarEndbossIcon = new StatusbarEndbossIcon();
     throwableObject = [];
     deadEnemies = [];
     thrownBottle = [];
+    collectedBottles = 0;
 
     level = level1;
     levelEnd;
 
-    soundCollectCoin = new Audio('audio/coin.mp3');
-    soundCollectBottle = new Audio('audio/bottle.mp3');
-    soundCollectHeart = new Audio('audio/heart.mp3');
-    soundBrokenBottle = new Audio('audio/glass.mp3');
-    soundDeadChicken = new Audio('audio/dead.mp3');
-    soundDeadBabyChicken = new Audio('audio/chicken.mp3');
-    soundEndboss = new Audio('audio/boss.mp3');
-    soundWon = new Audio('audio/win.mp3');
-    soundLost = new Audio('audio/lose.mp3');
-    music = new Audio('audio/music.mp3');
+    soundthrow = new Audio ('./audio/throw.mp3')
+    soundCollectCoin = new Audio('./audio/coin.mp3');
+    soundCollectBottle = new Audio('./audio/bottle.mp3');
+    soundCollectHeart = new Audio('./audio/heart.mp3');
+    soundBrokenBottle = new Audio('./audio/glass.mp3');
+    soundDeadChicken = new Audio('./audio/chicken.mp3');
+    soundDeadBabyChicken = new Audio('./audio/chicken.mp3');
+    soundEndboss = new Audio('./audio/boss.mp3');
+    soundWon = new Audio('./audio/win.mp3');
+    soundLost = new Audio('./audio/lose.mp3');
+    music = new Audio('./audio/music.mp3');
 
-    gameOver = new Endscreen('img/9_intro_outro_screens/game_over/game over.png', this.character.x - 120);
-    lost = new Endscreen('img/9_intro_outro_screens/game_over/you lost.png', this.character.x - 120);
+    gameOver = new Endscreen('./img/9_intro_outro_screens/game_over/game over.png', this.character.x - 120);
+    lost = new Endscreen('./img/9_intro_outro_screens/game_over/you lost.png', this.character.x - 120);
 
 
     constructor(canvas, keyboard) {
@@ -69,7 +71,7 @@ class World extends DrawWorld {
      * calls all slow functions
      */
     slowIntervalAction() {
-        this.checkThrowObject();
+        this.checkThrowObjects();
         this.checkCollisionEnemy();
         this.checkCollisionEndboss();
         this.setLevelEnd();
@@ -231,7 +233,7 @@ class World extends DrawWorld {
         let deadChicken = new DeadChicken(enemy.x, enemy.y);
         this.deadEnemies.push(deadChicken);
         this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
-        this.playSound(this.soundDeadChicken, 0.2);
+        this.playSound(this.soundDeadChicken, 0.1);
         setTimeout(() => this.deadEnemies.splice(deadChicken), 1000);
     }
 
@@ -244,7 +246,7 @@ class World extends DrawWorld {
         let deadBabyChicken = new DeadBabyChicken(enemy.x, enemy.y);
         this.deadEnemies.push(deadBabyChicken);
         this.level.smallEnemies.splice(this.level.smallEnemies.indexOf(enemy), 1);
-        this.playSound(this.soundDeadBabyChicken, 1);
+        this.playSound(this.soundDeadBabyChicken, 0.1);
         setTimeout(() => this.deadEnemies.splice(deadBabyChicken), 1000);
     }
 
@@ -289,8 +291,8 @@ class World extends DrawWorld {
      * main function for all functions of collision with items
      */
     checkCollisionItems() {
-        this.checkCollisionCoin();
-        this.checkCollectBottle();
+        this.checkCollisionCoins();
+        this.checkCollisonBottles();
         this.checkCollisionHeart();
         this.checkCollisionThrownBottle();
     }
@@ -299,13 +301,14 @@ class World extends DrawWorld {
     /**
      * checks conditions of collectiing coins
      */
-    checkCollisionCoin() {
+   
+    checkCollisionCoins() {
         this.level.coins.forEach((coin) => {
             if (this.character.isColliding(coin)) {
-                let i = this.level.coins.indexOf(coin);
-                this.level.coins.splice(i, 1);
-                this.statusBarCoin.collectedCoins++;
-                this.playSound(this.soundCollectCoin, 1);
+                this.coinCollected(coin);
+                this.character.raiseProgressbarCoin();
+                this.statusBarCoin.setPercentage(this.character.progessCoinBar);
+                this.soundCollectCoin.play();
             }
         });
     }
@@ -314,14 +317,13 @@ class World extends DrawWorld {
     /**
      * checks conditions of collecting bottles
      */
-    checkCollectBottle() {
+    checkCollisonBottles() {
         this.level.bottles.forEach((bottle) => {
             if (this.character.isColliding(bottle)) {
-                let i = this.level.bottles.indexOf(bottle);
-                this.level.bottles.splice(i, 1);
-                this.statusBarBottle.collectedBottles++;
-                this.statusBarBottle.bottleDepot.push(bottle);
-                this.playSound(this.soundCollectBottle, 0.2);
+                this.bottleCollected(bottle);
+                this.character.raiseProgressbarBottle();
+                this.statusBarBottle.setPercentage(this.character.progressBottleBar);
+                this.soundCollectBottle.play();
             }
         });
     }
@@ -340,6 +342,19 @@ class World extends DrawWorld {
                 this.playSound(this.soundCollectHeart, 0.5);
             }
         });
+    }
+
+
+    coinCollected(coin) {
+        let i = this.level.coins.indexOf(coin);
+        this.level.coins.splice(i, 1);
+    }
+
+
+    bottleCollected(bottle) {
+        let i = this.level.bottles.indexOf(bottle);
+        this.level.bottles.splice(i, 1);
+        this.collectedBottles++;
     }
 
 
@@ -396,7 +411,6 @@ class World extends DrawWorld {
         });
     }
 
-
     /**
      * checks conditions of the splashed bottle
      * @param {object} bottle 
@@ -410,30 +424,18 @@ class World extends DrawWorld {
     }
 
 
-    /**
-     * checks the conditions of throwing a object
-     */
-    checkThrowObject() {
-        if (this.keyboard.F) {
-            if (this.canThrowBottle()) {
-                let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
-                this.throwableObject.push(bottle);
-                this.statusBarBottle.collectedBottles--;
-                this.statusBarBottle.bottleDepot.splice(0, 1);
-            }
+   
+    checkThrowObjects() {
+        if (this.keyboard.F && this.collectedBottles > 0) {
+            let bottle = new ThrowableObjects(this.character.x, this.character.y + 100, this.character.changeDirection);
+            this.throwableObject.push(bottle);
+            this.collectedBottles--;
+            this.character.reduceProgressbarBottle();
+            this.statusBarBottle.setPercentage(this.character.progressBottleBar);
+            this.soundthrow.play();
         }
     }
 
-
-    /**
-     * calls function for throwing the bottle if it bigger than 0
-     * @returns boolean
-     */
-    canThrowBottle() {
-        return !this.character.changeDirection &&
-        this.statusBarBottle.collectedBottles > 0 &&
-        !this.endboss.endGame;
-    }
 
 
     /**
@@ -471,7 +473,7 @@ class World extends DrawWorld {
         setTimeout(() => {
             this.restartGame();
             this.pauseMusic(sound);
-        }, 8000)
+        }, 2000)
     }
 
 

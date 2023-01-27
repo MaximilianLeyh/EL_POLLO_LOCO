@@ -6,33 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EL POLLO LOCO</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="js/models/draw-world.class.js"></script>
-    <script src="js/models/world.class.js"></script>
-    <script src="js/models/drawable-object.class.js"></script>
-    <script src="js/models/movable-object.class.js"></script>
-    <script src="js/models/throwable-object.class.js"></script>
-    <script src="js/models/keyboard.class.js"></script>
-    <script src="js/models/StatusBarHealth.class.js"></script>
-    <script src="js/models/StatusBarEndboss.class.js"></script>
-    <script src="js/models/StatusBarCoin.class.js"></script>
-    <script src="js/models/StatusBarBottle.class.js"></script>
-    <script src="js/models/level.class.js"></script>
-    <script src="js/models/background-object.class.js"></script>
-    <script src="js/models/character.class.js"></script>
-    <script src="js/models/baby-chicken.class.js"></script>
-    <script src="js/models/chicken.class.js"></script>
-    <script src="js/models/cloud.class.js"></script>
-    <script src="js/models/coin.class.js"></script>
-    <script src="js/models/bottle.class.js"></script>
-    <script src="js/models/bottle-splash.class.js"></script>
-    <script src="js/models/heart.class.js"></script>
-    <script src="js/models/endboss.class.js"></script>
-    <script src="js/models/dead-chicken.class.js"></script>
-    <script src="js/models/dead-baby-chicken.class.js"></script>
-    <script src="js/models/endscreen.class.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/levels/level1.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./js/models/draw-world.class.js"></script>
+    <script src="./js/models/world.class.js"></script>
+    <script src="./js/models/drawable-object.class.js"></script>
+    <script src="./js/models/moveable-object.class.js"></script>
+    <script src="./js/models/throwable-object.class.js"></script>
+    <script src="./js/models/keyboard.class.js"></script>
+    <script src="./js/models/statusbar_object.class.js"></script>
+    <script src="./js/models/statusbar_health.class.js"></script>
+    <script src="./js/models/statusbar_endboss.class.js"></script>
+    <script src="./js/models/statusbar_endboss_icon.class.js"></script>
+    <script src="./js/models/statusbar_coin.class.js"></script>
+    <script src="./js/models/statusbar_bottle.class.js"></script>
+    <script src="./js/models/level.class.js"></script>
+    <script src="./js/models/background-object.class.js"></script>
+    <script src="./js/models/character.class.js"></script>
+    <script src="./js/models/baby-chicken.class.js"></script>
+    <script src="./js/models/chicken.class.js"></script>
+    <script src="./js/models/cloud.class.js"></script>
+    <script src="./js/models/coin.class.js"></script>
+    <script src="./js/models/bottle.class.js"></script>
+    <script src="./js/models/bottle-splash.class.js"></script>
+    <script src="./js/models/heart.class.js"></script>
+    <script src="./js/models/endboss.class.js"></script>
+    <script src="./js/models/dead-chicken.class.js"></script>
+    <script src="./js/models/dead-baby-chicken.class.js"></script>
+    <script src="./js/models/endscreen.class.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/levels/level1.js"></script>
     <link rel="shortcut icon" href="./img/10_assets/c.png" type="image/x-icon">
   </head>
   <!------------------------------ BODY ---------------------------------------------->
@@ -50,15 +52,15 @@
 
       <div class="menuButtonLine" id="menuButtonLine">
         <button id="settingsButton" class="menuButton" onclick="settings()">
-          <img src="img/10_assets/settings.png" />
+          <img src="./img/10_assets/settings.png" />
         </button>
 
         <button id="controlButton" class="menuButton" onclick="control()">
-          <img src="img/10_assets/games.png" />
+          <img src="./img/10_assets/games.png" />
         </button>
 
         <button id="fullscreenButton" class="menuButton" onclick="fullscreen()">
-          <img src="img/10_assets/fullscreen.png" />
+          <img src="./img/10_assets/fullscreen.png" />
         </button>
 
         <button
@@ -66,7 +68,7 @@
           class="menuButton"
           onclick="GoBackToStartScreen()"
         >
-          <img src="img/10_assets/restartGame.png" />
+          <img src="./img/10_assets/restartGame.png" />
         </button>
       </div>
 
@@ -112,11 +114,11 @@
             <p>Move right</p>
             <img
               class="controlImage d-none"
-              src="img/10_assets/right-arrow.png"
+              src="./img/10_assets/right-arrow.png"
             />
             <img
               class="controlImageTouch d-none"
-              src="img/10_assets/right-arrow.png"
+              src="./img/10_assets/right-arrow.png"
             />
           </div>
 
@@ -124,29 +126,29 @@
             <p>Move Left</p>
             <img
               class="controlImage d-none"
-              src="img/10_assets/left-arrow.png"
+              src="./img/10_assets/left-arrow.png"
             />
             <img
               class="controlImageTouch d-none"
-              src="img/10_assets/left-arrow.png"
+              src="./img/10_assets/left-arrow.png"
             />
           </div>
 
           <div class="d-flex alignCenter spaceBetween">
             <p>Jump</p>
-            <img class="controlImage d-none" src="img/10_assets/space.png" />
+            <img class="controlImage d-none" src="./img/10_assets/space.png" />
             <img
               class="controlImageTouch d-none"
-              src="img/10_assets/up-arrow.png"
+              src="./img/10_assets/up-arrow.png"
             />
           </div>
 
           <div class="d-flex alignCenter spaceBetween">
             <p>Throw Weapon</p>
-            <img class="controlImage d-none" src="img/10_assets/f.png" />
+            <img class="controlImage d-none" src="./img/10_assets/f.png" />
             <img
               class="controlImageTouch d-none"
-              src="img/10_assets/wine-bottle.png"
+              src="./img/10_assets/wine-bottle.png"
             />
           </div>
 
@@ -165,18 +167,18 @@
       <div id="hud" class="hud d-none">
         <div class="panel d-flex alignCenter spaceBetween">
           <button id="btnLeft">
-            <img src="img/10_assets/left-arrow.png" />
+            <img src="./img/10_assets/left-arrow.png" />
           </button>
           <button id="btnRight">
-            <img src="img/10_assets/right-arrow.png" />
+            <img src="./img/10_assets/right-arrow.png" />
           </button>
         </div>
         <div class="panel d-flex alignCenter spaceBetween">
           <button id="btnJump">
-            <img src="img/10_assets/up-arrow.png" />
+            <img src="./img/10_assets/up-arrow.png" />
           </button>
           <button id="btnThrow">
-            <img class="throw" src="img/10_assets/wine-bottle.png" />
+            <img class="throw" src="./img/10_assets/wine-bottle.png" />
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
-class Heart extends MovableObject {
+class Heart extends MoveableObject {
     
     imagesHeart = [
-        'img/7_statusbars/3_icons/icon_health.png'
+        './img/7_statusbars/3_icons/icon_health.png'
     ];
 
     constructor(x, y) {

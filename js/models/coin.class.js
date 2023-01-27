@@ -1,4 +1,4 @@
-class Coin extends MovableObject {
+class Coin extends MoveableObject {
 
     offset = {
         top: 20,
@@ -8,8 +8,8 @@ class Coin extends MovableObject {
     }
 
     imagesCoin = [
-        'img/8_coin/coin_1.png',
-        'img/8_coin/coin_2.png'
+        './img/8_coin/coin_1.png',
+        './img/8_coin/coin_2.png'
     ];
 
     constructor(x, y) {

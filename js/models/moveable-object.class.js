@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObject {
+class MoveableObject extends DrawableObject {
 
     speed = 0.15;
     speedY = 0;
@@ -8,6 +8,8 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     attack = false;
     endGame = false;
+    progessCoinBar = 0;
+    progressBottleBar = 0;
 
 
     /**
@@ -77,12 +79,13 @@ class MovableObject extends DrawableObject {
      * @param {object} object 
      * @returns boolean
      */
-    isColliding(object) {
-     return this.rightBorder() > this.leftObjectBorder(object) &&
-            this.bottomBorder() > this.topObjectBorder(object) &&
-            this.leftBorder() < this.rightObjectBorder(object) &&
-            this.topBorder() < this.bottomObjectBorder(object);
+    isColliding(mo) {
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
+
     
 
     rightBorder() {
@@ -122,6 +125,21 @@ class MovableObject extends DrawableObject {
 
     bottomObjectBorder(object) {
         return object.y + object.height - object.offset.bottom;
+    }
+
+
+    raiseProgressbarCoin() {
+        this.progessCoinBar += 5;
+    }
+
+
+    raiseProgressbarBottle() {
+        this.progressBottleBar += 10;
+    }
+
+
+    reduceProgressbarBottle() {
+        this.progressBottleBar -= 10;
     }
 
 

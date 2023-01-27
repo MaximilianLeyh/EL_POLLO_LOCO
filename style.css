@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'zabras';
-    src: url('fonts/zabars.ttf') format('truetype');
+    src: url('./fonts/zabars.ttf') format('truetype');
 }
 
 body {
@@ -15,7 +15,7 @@ body {
 
 body::after {
     content: "";
-    background-image: url('img/5_background/desert.png');
+    background-image: url('./img/5_background/desert.png');
     background-size: cover;
     background-position: contain;
     opacity: 0.7;
@@ -115,7 +115,7 @@ button:hover {
 }
 
 #startContainer {
-    background-image: url('img/9_intro_outro_screens/start/startscreen_1.png');
+    background-image: url('./img/9_intro_outro_screens/start/startscreen_1.png');
     background-size: 100% 100%;
     width: 100%;
     height: 100%;
