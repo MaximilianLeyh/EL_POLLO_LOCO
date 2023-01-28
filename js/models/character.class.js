@@ -4,11 +4,12 @@ class Character extends MoveableObject {
     speed = 15;
 
     animationInterval;
-
+    characterLastMovement = 0;
     soundJump = new Audio('./audio/jump.mp3');
     soundHurt = new Audio('./audio/hurt.mp3');
     soundDead = new Audio('./audio/dead.mp3');
     soundWalk = new Audio('./audio/walk.mp3');
+    soundSnoring = new Audio('./audio/snoring.mp3');
 
     offset = {
         top: 100,
@@ -71,6 +72,19 @@ class Character extends MoveableObject {
         './img/2_character_pepe/1_idle/idle/I-10.png'
     ];
 
+    imagesSleeping = [
+        './img/2_character_pepe/1_idle/long_idle/I-11.png',
+        './img/2_character_pepe/1_idle/long_idle/I-12.png',
+        './img/2_character_pepe/1_idle/long_idle/I-13.png',
+        './img/2_character_pepe/1_idle/long_idle/I-14.png',
+        './img/2_character_pepe/1_idle/long_idle/I-15.png',
+        './img/2_character_pepe/1_idle/long_idle/I-16.png',
+        './img/2_character_pepe/1_idle/long_idle/I-17.png',
+        './img/2_character_pepe/1_idle/long_idle/I-18.png',
+        './img/2_character_pepe/1_idle/long_idle/I-19.png',
+        './img/2_character_pepe/1_idle/long_idle/I-20.png'
+    ];
+
 
     constructor() {
         super().loadImage(this.imagesCharacterWalking[0]);
@@ -79,12 +93,14 @@ class Character extends MoveableObject {
         this.loadImages(this.imagesHurt);
         this.loadImages(this.imagesDead);
         this.loadImages(this.imagesIdle);
+        this.loadImages(this.imagesSleeping);
         this.applyGravity();
         this.animateMovement();
         this.setAnimation();
+        this.setTimeStamp();
     }
 
-    
+
     /**
      * calls the functions of walking and jumping
      */
@@ -114,7 +130,7 @@ class Character extends MoveableObject {
         if (this.canMoveRight()) {
             this.moveRight();
             this.changeDirection = false;
-            this.soundWalk.play();
+            this.world.playSound(this.soundWalk, 1);
         }
     }
 
@@ -125,10 +141,10 @@ class Character extends MoveableObject {
      */
     canMoveRight() {
         return this.world.keyboard.RIGHT &&
-        this.x < 5750 &&
-        !this.world.endboss.endGame;
+            this.x < 5750 &&
+            !this.world.endboss.endGame;
     }
-    
+
 
     /**
      * calls function for moving left
@@ -137,7 +153,7 @@ class Character extends MoveableObject {
         if (this.canMoveLeft()) {
             this.moveLeft();
             this.changeDirection = true;
-            this.soundWalk.play();
+            this.world.playSound(this.soundWalk, 1);
         }
     }
 
@@ -148,8 +164,8 @@ class Character extends MoveableObject {
      */
     canMoveLeft() {
         return this.world.keyboard.LEFT &&
-        this.x > 100 &&
-        !this.world.endboss.endGame;
+            this.x > 100 &&
+            !this.world.endboss.endGame;
     }
 
 
@@ -170,8 +186,8 @@ class Character extends MoveableObject {
      */
     canJump() {
         return this.world.keyboard.SPACE &&
-        !this.aboveGround() &&
-        !this.world.endboss.endGame;
+            !this.aboveGround() &&
+            !this.world.endboss.endGame;
     }
 
 
@@ -187,16 +203,34 @@ class Character extends MoveableObject {
      * checks all different animations
      */
     animation() {
+        this.soundSnoring.pause();
         if (this.isDead())
             this.characterDead();
         else if (this.isHurt() && !this.world.endboss.endGame)
             this.characterHurt();
-        else if (this.aboveGround() && !this.world.endboss.endGame)
+        else if (this.aboveGround() && !this.world.endboss.endGame) {
             this.characterJump();
-        else if (this.walkKeypressEvent() && !this.world.endboss.endGame)
+            this.setTimeStamp(); }
+        else if (this.walkKeypressEvent() && !this.world.endboss.endGame) {
             this.playAnimation(this.imagesCharacterWalking);
-        else   
-            this.playAnimation(this.imagesIdle);                
+            this.setTimeStamp(); }
+        else if (this.characterMoveTimepassed() > 2) {
+            this.playAnimation(this.imagesSleeping);
+            this.world.playSound(this.soundSnoring, 0.2);
+        }
+        else
+            this.playAnimation(this.imagesIdle);
+    }
+
+    characterMoveTimepassed() {
+        let timepassed = new Date().getTime() - this.characterLastMovement;
+        timepassed = timepassed / 1000;
+        return timepassed;
+    }
+
+
+    setTimeStamp() {
+        this.characterLastMovement = new Date().getTime();
     }
 
 
@@ -237,7 +271,7 @@ class Character extends MoveableObject {
     characterJump() {
         this.playAnimation(this.imagesCharacterJumping);
         if (this.speedY > 0)
-            this.world.playSound(this.soundJump, 0.2);
+            this.world.playSound(this.soundJump, 0.5);
     }
 }
 
@@ -247,7 +281,6 @@ class Character extends MoveableObject {
 
 
 
-  
 
 
 
@@ -258,5 +291,5 @@ class Character extends MoveableObject {
 
 
 
- 
-    
+
+

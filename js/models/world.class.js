@@ -20,7 +20,7 @@ class World extends DrawWorld {
 
     level = level1;
     levelEnd;
-
+    characterLastMovement = 0;
     soundthrow = new Audio ('./audio/throw.mp3')
     soundCollectCoin = new Audio('./audio/coin.mp3');
     soundCollectBottle = new Audio('./audio/bottle.mp3');
@@ -129,7 +129,7 @@ class World extends DrawWorld {
     playMusic() {
         if(musicOn()) {
             this.music.play();
-            this.music.volume = 0.2;
+            this.music.volume = 0.1;
         } else {
             this.pauseMusic();
         }
@@ -308,7 +308,7 @@ class World extends DrawWorld {
                 this.coinCollected(coin);
                 this.character.raiseProgressbarCoin();
                 this.statusBarCoin.setPercentage(this.character.progessCoinBar);
-                this.soundCollectCoin.play();
+                this.playSound(this.soundCollectCoin, 1);
             }
         });
     }
@@ -323,7 +323,7 @@ class World extends DrawWorld {
                 this.bottleCollected(bottle);
                 this.character.raiseProgressbarBottle();
                 this.statusBarBottle.setPercentage(this.character.progressBottleBar);
-                this.soundCollectBottle.play();
+                this.playSound(this.soundCollectBottle, 0.2);
             }
         });
     }
@@ -339,18 +339,24 @@ class World extends DrawWorld {
                 this.level.hearts.splice(i, 1);
                 this.character.heal(40);
                 this.statusBarHealth.setPercentage(this.character.energy);
-                this.playSound(this.soundCollectHeart, 0.5);
+                this.playSound(this.soundCollectHeart, 0.2);
             }
         });
     }
 
 
+     /**
+     * if coin collected it raises amount of coins and coinbar
+     */
     coinCollected(coin) {
         let i = this.level.coins.indexOf(coin);
         this.level.coins.splice(i, 1);
     }
 
 
+     /**
+     * if bottle collected it raises amount of bottles and bottlebar
+     */
     bottleCollected(bottle) {
         let i = this.level.bottles.indexOf(bottle);
         this.level.bottles.splice(i, 1);
@@ -432,8 +438,19 @@ class World extends DrawWorld {
             this.collectedBottles--;
             this.character.reduceProgressbarBottle();
             this.statusBarBottle.setPercentage(this.character.progressBottleBar);
-            this.soundthrow.play();
+            this.character.setTimeStamp();
+            this.playSound(this.soundthrow, 1);
         }
+    }
+
+    setTimeStamp() {
+        this.characterLastMovement = new Date().getTime();
+    }
+
+    characterMoveTimepassed() {
+        let timepassed = new Date().getTime() - this.characterLastMovement;
+        timepassed = timepassed / 1000;
+        return timepassed;
     }
 
 
